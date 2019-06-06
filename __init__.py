@@ -1,10 +1,10 @@
 # __init__.py
 
 # generation imports
-import hawkes_model.generation
+import .generation
 
 # inference imports
-import hawkes_model.inference
+import .inference
 
 # utils imports
 from .utils import *
