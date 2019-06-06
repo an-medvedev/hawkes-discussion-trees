@@ -6,7 +6,7 @@ from copy import deepcopy
 from .utils import * 
 
 
-def weibull_poisson_times(a, b, alpha, T=None, limit_size=None, start_time = 0.0) -> 'list of arrival times':   
+def weibull_poisson_times(a, b, alpha, T=None, limit_size=None, start_time = 0.0):   
     '''Generate arrival times of Poisson process with Weibull intensity. 
     Thinning algorithm of Lewis and Shedler [1979] was implemented.
 
@@ -222,6 +222,8 @@ def continue_hawkes_comment_tree(given_tree, start_time, root_params, offspring_
         _: bool                              -- whether the generated tree did not exceed the limit_tree_size
     
     '''
+    a,b, alpha = root_params
+    mu, sigma, avg_brnch = offspring_params
     g = deepcopy(given_tree)
     root = get_root(g)
     root_comment_nodes = []
@@ -239,7 +241,7 @@ def continue_hawkes_comment_tree(given_tree, start_time, root_params, offspring_
         del existing_comment_nodes[0]
         comment_time = g.node[comment_node]['created']
         gen_comment_arrival_times.clear()
-        gen_comment_arrival_times = lognormal_poisson_times(*offspring_params, T = T_comments, 
+        gen_comment_arrival_times = lognormal_poisson_times(mu, sigma, avg_brnch, T = T_comments, 
                                                             limit_size = limit_comments_size,
                                                             start_time = start_time - comment_time)
         next_comment_arrival_times = [i+comment_time for i in gen_comment_arrival_times]
@@ -256,7 +258,7 @@ def continue_hawkes_comment_tree(given_tree, start_time, root_params, offspring_
             del generated_comment_nodes[0]
             comment_time = g.node[current_node]['created']
             gen_comment_arrival_times.clear()
-            gen_comment_arrival_times = lognormal_poisson_times(*offspring_params, T_comments, 
+            gen_comment_arrival_times = lognormal_poisson_times(mu, sigma, avg_brnch, T_comments, 
                                                  start_time = start_time - comment_time)
             next_comment_arrival_times = [i+comment_time for i in gen_comment_arrival_times]
             if len(next_comment_arrival_times)>0:
@@ -268,7 +270,7 @@ def continue_hawkes_comment_tree(given_tree, start_time, root_params, offspring_
             if nx.number_of_nodes(g) > limit_tree_size:
                 return g, False   
             
-    next_root_comment_arrival_times = weibull_poisson_times(*root_params, T = T_root, 
+    next_root_comment_arrival_times = weibull_poisson_times(a,b, alpha, T = T_root, 
                                                             limit_size = limit_root_size,
                                                            start_time = start_time)
     for next_t in next_root_comment_arrival_times:
@@ -276,7 +278,7 @@ def continue_hawkes_comment_tree(given_tree, start_time, root_params, offspring_
         g.add_node(node_index, created = next_t, root = False)
         g.add_edge(root, node_index)
         next_comment_nodes = []
-        gen_comment_arrival_times = lognormal_poisson_times(*offspring_params, T = T_comments, 
+        gen_comment_arrival_times = lognormal_poisson_times(mu, sigma, avg_brnch, T = T_comments, 
                                                            limit_size = limit_comments_size)
         gen_comment_arrival_times = [t + next_t for t in gen_comment_arrival_times]
         if len(gen_comment_arrival_times)>0:
@@ -291,7 +293,7 @@ def continue_hawkes_comment_tree(given_tree, start_time, root_params, offspring_
             current_node = next_comment_nodes[0]
             del next_comment_nodes[0]
             t_offspring = g.node[current_node]['created']
-            gen_comment_arrival_times = lognormal_poisson_times(*offspring_params, T = T_comments, 
+            gen_comment_arrival_times = lognormal_poisson_times(mu, sigma, avg_brnch, T = T_comments, 
                                                            limit_size = limit_comments_size)
             gen_comment_arrival_times = [t + next_t for t in gen_comment_arrival_times]
             if len(gen_comment_arrival_times)>0:

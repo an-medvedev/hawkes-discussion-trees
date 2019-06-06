@@ -11,12 +11,6 @@ setup(
   url = 'https://github.com/an-medvedev/hawkes-discussion-trees',
   download_url = 'https://github.com/an-medvedev/hawkes-discussion-trees',
   keywords = ['discussion tree', 'Hawkes process', 'statistical inference'],
-  install_requires=[
-          'networkx',
-          'numpy',
-          'scipy',
-          'warnings'
-      ],
   classifiers=[  # Optional
     # How mature is this project? Common values are
     #   3 - Alpha

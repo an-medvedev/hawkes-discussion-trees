@@ -66,7 +66,7 @@ def extract_comment_arrival_times(tree, root=None):
     comment_arrival_times.sort()
     return root_arrival_times, comment_arrival_times
 
-def get_root(tree:'nx.Graph') -> 'node, else None':
+def get_root(tree):
     '''Find the root of the discussion tree.
     
     Input: 
@@ -179,7 +179,7 @@ def get_timeseries_from_tree(tree):
     timeline.sort()
     return timeline
 
-def weibull_func(t:'argument', a:'a', b:'b', alpha:'alpha') -> 'value: float': 
+def weibull_func(t, a, b, alpha): 
     '''Return Weibull pdf function $W(t,a,b,\alpha)$ evaluated at t.
 
     Parameters: 
@@ -197,7 +197,7 @@ def weibull_func(t:'argument', a:'a', b:'b', alpha:'alpha') -> 'value: float':
     f = (a*alpha/b)*(t/b)**(alpha-1)*np.exp(-(t/b)**alpha)
     return f
 
-def lognorm_func(t:'argument', mu, sigma, avg_brnch): 
+def lognorm_func(t, mu, sigma, avg_brnch): 
     '''Return value of LogNormal pdf function scaled by avg_brunch $avg_brnch*LN(t,\mu,\sigma)$ evaluated at t.
     
 
