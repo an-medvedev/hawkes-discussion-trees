@@ -80,7 +80,7 @@ def get_root(tree:'nx.Graph') -> 'node, else None':
             return u
     return None
 
-def relabel_nodesto_int(tree):
+def relabel_nodes_to_int(tree):
     '''Return the tree with relabelled nodes as integers.
 
     Input:

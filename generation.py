@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 import networkx as nx
 from scipy import optimize
 from copy import deepcopy
@@ -266,7 +265,6 @@ def continue_hawkes_comment_tree(given_tree, start_time, root_params, offspring_
                     g.add_node(node_index, created = t2, root = False)
                     g.add_edge(current_node, node_index)
                     generated_comment_nodes.append(node_index)
-                    node_index+=1
             if nx.number_of_nodes(g) > limit_tree_size:
                 return g, False   
             
@@ -282,10 +280,11 @@ def continue_hawkes_comment_tree(given_tree, start_time, root_params, offspring_
                                                            limit_size = limit_comments_size)
         gen_comment_arrival_times = [t + next_t for t in gen_comment_arrival_times]
         if len(gen_comment_arrival_times)>0:
+            current_node = node_index
             for t2 in gen_comment_arrival_times:
                 node_index += 1
                 g.add_node(node_index, created = t2, root = False)
-                g.add_edge(node_index, node_index)
+                g.add_edge(current_node, node_index)
                 next_comment_nodes.append(node_index)
                 
         while len(next_comment_nodes)!=0:
