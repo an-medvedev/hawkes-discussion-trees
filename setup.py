@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
   name = 'hawkes-discussion-trees',
-  packages = [],
+  packages = ['hawkes_discussion_trees',],
   version = '0.0.1',
   license='MIT',
   description = 'Hawkes model for discussion trees. Infer the parameters, generate the branching tree from the model.',
